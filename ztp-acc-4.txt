@@ -1,0 +1,55 @@
+from cli import configure, execute
+	
+USER="mouhsine"
+PASSWORD="axians"
+ENABLE="axians"
+	
+def config_basique():                       
+	configure(['hostname acc4-B1-um6p-2020-07-B7'])
+	configure(['username{} privilege 15 password {}'
+	.format(USER,PASSWORD)])
+	configure(['enable secret {}'
+	.format(ENABLE)])
+	configure(['line vty 0 4', 'transport input ssh',
+	 'login local'])
+	configure(['ip domain-name um6p.com'])
+	configure(['crypto key generate rsa'])
+	execute('wr')
+def config_vlan():
+	configure(['vlan 4','name Voice'
+	'vlan 5', 'name Wifi'])
+
+def config_spaning_tree():
+	configure(['spanning-tree mode rapid-pvst',
+	'spanning-tree extend system-id']
+def config_switchport():
+	cli.configurep(['interface Ge0/0',
+	'switchport trunk encapsulation dot1q',
+	'switchport mode trunk',
+	'switchport nonegotiate')]
+	cli.configurep(['interface Ge0/1',
+	'switchport trunk encapsulation dot1q',
+	'switchport mode trunk',
+	'switchport nonegotiate')]
+	cli.configurep(['interface Ge0/2',
+	'switchport mode access',
+	'switchport access vlan 4',
+	'switchport nonegotiate',
+	'switchport port-security maximum 2'
+ 	'switchport port-security mac-address sticky',
+	'spanning-tree portfast edge',
+ 	'spanning-tree bpduguard enable')]
+	cli.configurep(['interface Ge0/3',
+	'switchport mode access',
+	'switchport access vlan 5 ',
+	'switchport nonegotiate',
+	'switchport port-security maximum 2'
+ 	'switchport port-security mac-address sticky',
+	'spanning-tree portfast edge',
+ 	'spanning-tree bpduguard enable')]
+	cli.configurep(['interface Ge1/2',
+	'switchport trunk encapsulation dot1q',
+	'switchport mode trunk',
+	'switchport nonegotiate')]
+	
+
